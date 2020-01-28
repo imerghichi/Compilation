@@ -11,6 +11,7 @@
 #include <string.h>
 
 #define LONGUEUR_MOT 250
+#define NOMBRE_TOKENS 46
 
 typedef enum _booleen {
     false, true
@@ -66,6 +67,7 @@ typedef enum _TOKEN {
     AFF_TOKEN = 1038,
     NOT_TOKEN = 1039,
     DIFF_TOKEN = 1040,
+    SEPARATOR_TOKEN =1041,
 
 
 
@@ -140,8 +142,8 @@ char fichier_interpreteur_input_nom[30];
 
 char char_courrant;
 
-int line_courrante;
-
+int ligne_courrante;
+struct _symbole symbole_courrant;
 
 
 #endif //COMPILATION_UTILITES_H
