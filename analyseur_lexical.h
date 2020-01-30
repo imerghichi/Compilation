@@ -1,5 +1,5 @@
 //
-// Created by taaha on 28/01/2020.
+// Created by imaane on 28/01/2020.
 //
 
 #ifndef COMPILATION_ANALYSEUR_LEXICAL_H
@@ -39,6 +39,7 @@ static void lire_string();
 static void lire special;
 
 static booleen est_special();
+static booleen est_deuxieme_special();
 static booleen est_car();
 static booleen est_nombre();
 static booleen est_separateur();
@@ -47,7 +48,7 @@ static booleen est_double_quote();
 static booleen est_simple_quote();
 static booleen est_eof();
 static booleen est_nouvelle_ligne();
-static booleen est_point_car;
+static booleen est_point_car();
 
 
 void sym_Suivant() ;

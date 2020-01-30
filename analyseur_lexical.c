@@ -1,9 +1,10 @@
 //
-// Created by taaha on 28/01/2020.
+// Created by imaane on 28/01/2020.
 //
 
 #include "analyseur_lexical.h"
 #include "utilites.h"
+#include "erreurs.h"
 
 int index_courrant = 0;
 
@@ -26,8 +27,18 @@ static booleen est_special(){r;e
             return false;
     }
 }
+static booleen est_deuxieme_special(){
+    switch(char_courrant){
+        case '=':
+        case '-': //affectation
+            return true;
+        default:
+            return false;
+    }
+}
+
 static booleen est_car(){
-    if ((char_courrant >= 'a' && char_courrant <='z') ||(char_courrant >= 'A' && char_courrant <= 'Z')){
+    if ((char_courrant >= 'a' && char_courrant <='z') ||(char_courrant >= 'A' && char_courrant <= 'Z')|| char_courrant == '_'){
         return true;
     }
     return false;
@@ -38,15 +49,44 @@ static booleen est_nombre(){
     }
     return false;
 }
-static booleen est_separateur();
+static booleen est_separateur(){
+    switch (char_courrant) {
+        case ' ' :
+        case '\n':
+        case '\t':
+        case '\r':
+            return true;
+        default:
+            return false;
+    }
+}
 static booleen est_comment(){
     if(char_courrant == "#") return true;
     return false;
 }
-static booleen est_double_quote();
-static booleen est_simple_quote();
-static booleen est_eof();
-static booleen est_nouvelle_ligne();
+static booleen est_double_quote(){
+    if(char_courrant == '"') return true;
+    return false;
+}
+static booleen est_simple_quote(){
+    if(char_courrant == '\'') return true;
+    return false;
+}
+static booleen est_eof(){
+    if(char_courrant == EOF) return true;
+    return false;
+
+}
+static booleen est_nouvelle_ligne(){
+    if(char_courrant == '\n')
+        return true;
+    return false;
+}
+static booleen est_point_car(){
+    if(char_courrant == '.') return true;
+    return false;
+}
+
 
 void sym_Suivant() {
     do{
@@ -115,11 +155,32 @@ static void flush_mot(){
     symbole_courrant.mot[1] = '\0';
 }
 
-static void lire_numeral();
-static void lire_decimal();
-static void lire_string();
-static void lire special;
-static void point_car();
+static void lire_numeral(){
+    do{
+        caractere_suivant();
+    }while (est_nombre())
+}
+static void lire_decimal(){
+    if(est_point_car()){
+        caractere_suivant();
+        if(est_nombre()){
+            while (est_nombre()){
+                caractere_suivant();
+            }
+            //nombre flottant
+            assign_token(NA_REAL_TOKEN);
+        }
+        else
+            raise_erreur(SINGLE_QUOTE);
+    }
+    else{
+        assign_token(NA_INTEGER_TOKEN);
+    }
+}
+static void point_car(){
+    caractere_suivant();
+    assign_token(POINT_TOKEN);
+}
 
 void lireMot(){
 /*
@@ -194,12 +255,67 @@ void lireMot(){
     else{
         sym_Cour.CODE = ID_TOKEN;
     }*/
+    sym_Suivant();
+    while (est_car() || est_nombre()){
+        sym_Suivant();
+    }
+
+    assign_token(NOTHING);
 }
-static void lire_separateur();
-static void lire_erreur();
-static void lireNombre();
-static void lireComment();
-static void lireCar();
-static void lire_end_of_file ();
-static void lire_nouvelle_ligne ();
+static void lire_separateur(){
+    caractere_suivant();
+    assign_token(SEPARATOR_TOKEN);
+}
+static void lire_erreur(){
+    raise_erreur(CARACTERE_INCONNU);
+    caractere_suivant();
+
+}
+static void lireNombre(){
+    lire_numeral();
+    lire_decimal();
+}
+static void lireComment(){
+    if(est_comment()){
+        caractere_suivant();
+        while (! char_courrant != '\n' && !est_eof()){
+            caractere_suivant();
+        }
+        assign_token(COMMENT_TOKEN);
+    }
+    else{
+        assign_token(NOTHING);
+    }
+
+}
+static void lireCar(){
+    caractere_suivant();
+    if(est_car() || est_nombre())caractere_suivant();
+    else if
+
+}
+static void lire_end_of_file (){
+    strcpy(symbole_courrant.mot,"END OF FILE");
+    assign_token(EOF_TOKEN);
+}
+static void lire_nouvelle_ligne (){
+    ligne_courrante++;
+    caractere_suivant();
+}
+static void lire_string(){
+    sym_Suivant();
+    while (!est_double_quote()){
+        sym_Suivant();
+    }
+    sym_Suivant();
+    assign_token(STRING_TOKEN);
+}
+static void lire special(){
+    sym_Suivant();
+    if (est_deuxieme_special()) sym_Suivant();
+
+    assign_token(NOTHING);
+
+
+}
 

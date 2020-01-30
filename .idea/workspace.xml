@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakeRunConfigurationManager" shouldGenerate="true" shouldDeleteObsolete="true">
+    <generated />
+  </component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="981998c8-de4c-478a-a288-fe8580f0b149" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/erreurs.c" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/erreurs.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analyseur_lexical.c" beforeDir="false" afterPath="$PROJECT_DIR$/analyseur_lexical.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/analyseur_lexical.h" beforeDir="false" afterPath="$PROJECT_DIR$/analyseur_lexical.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utilites.h" beforeDir="false" afterPath="$PROJECT_DIR$/utilites.h" afterDir="false" />
+    </list>
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1X2iA0eE7rYC0m2bu1tDqUy3V4k" />
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="981998c8-de4c-478a-a288-fe8580f0b149" name="Default Changelist" comment="" />
+      <created>1580250442601</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1580250442601</updated>
+      <workItem from="1580250443772" duration="9312000" />
+    </task>
+    <task id="LOCAL-00001" summary="start">
+      <created>1580251354650</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1580251354650</updated>
+    </task>
+    <task id="LOCAL-00002" summary="start">
+      <created>1580255562972</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1580255562972</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="start" />
+    <option name="LAST_COMMIT_MESSAGE" value="start" />
+  </component>
+</project>
