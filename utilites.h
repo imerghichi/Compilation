@@ -134,6 +134,16 @@ typedef enum _symbole_type {
 } symbole_type;
 
 struct _symbole_stocke {
+    char mot[LONGUEUR_MOT];
+    enum _symbole_type type;
+    int adresse;
+    int longueur;
+    booleen est_constant;
+    int offset;
+
+    //arrays
+    int start;
+    int end;
 
 
 };
@@ -145,7 +155,18 @@ char fichier_interpreteur_input_nom[30];
 char char_courrant;
 
 int ligne_courrante;
+int offset;
+
 struct _symbole symbole_courrant;
+int table_de_symboles_size;
+int table_de_symboles_max_size;
+struct _symbole_stocke *table_de_symbole;
+
+int etat;
+int adresse_courrante;
+int adresse_offset
+symbole_type expression_type;
+
 
 
 #endif //COMPILATION_UTILITES_H
