@@ -87,16 +87,42 @@ void setSymbole_end(int end){
 
 }
 
-int symbole_table_free(int start);
+int symbole_table_free(int start){
+    int i =start;
+    int r=0;
+    while (table_de_symbole[i].offset>=adresse_offset && i<=table_de_symboles_size){
+        if((table_de_symbole[i].type == TVAR || table_de_symbole[i] == TCHAR || table_de_symbole[i]==TDEC || table_de_symbole[i] ==TINT) && (table_de_symbole[i]).offset == adresse_offset) r++;
+        if(table_de_symbole->end != 0){
+            r += table_de_symbole[i].end - table_de_symbole[i].start; //delete a matrix
+        }
+        i++;
+    }
+    return r;
+}
 
-booleen est_symbole_courrant_constant();
-symbole_type getSymbole_courrant_type();
-int getSymbole_adresse();
+booleen est_symbole_courrant_constant(){
+    return table_de_symbole[table_de_symboles_size - 1].est_constant;
+}
+symbole_type getSymbole_courrant_type(){
+    return table_de_symbole[table_de_symboles_size - 1].type;
+}
+int getSymbole_adresse(){
+    return table_de_symbole[table_de_symboles_size - 1].adresse;
 
-int getSymbole_end();
-int getSymbole_start();
+}
+
+int getSymbole_end(){
+    return table_de_symbole[table_de_symboles_size - 1].end;
+
+}
+int getSymbole_start(){
+    return table_de_symbole[table_de_symboles_size - 1].start;
+
+}
 
 static void changer_size(){
     table_de_symboles_max_size += 20;
     table_de_symbole = realloc(table_de_symbole, table_de_symboles_max_size * sizeof(struct _symbole_stocke));
 }
+
+

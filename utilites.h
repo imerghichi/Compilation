@@ -131,6 +131,9 @@ struct _symbole {
 
 typedef enum _symbole_type {
     TVAR,
+    TINT,
+    TDEC,
+    TCHAR,
 } symbole_type;
 
 struct _symbole_stocke {

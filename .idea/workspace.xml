@@ -10,13 +10,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="981998c8-de4c-478a-a288-fe8580f0b149" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/analyseur_syntaxique.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/analyseur_syntaxique.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pseudo_code.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pseudo_code.h" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/table_de_symboles.c" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/table_de_symboles.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/table_de_symboles.c" beforeDir="false" afterPath="$PROJECT_DIR$/table_de_symboles.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utilites.h" beforeDir="false" afterPath="$PROJECT_DIR$/utilites.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,6 +30,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -58,7 +54,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1580250442601</updated>
-      <workItem from="1580250443772" duration="12749000" />
+      <workItem from="1580250443772" duration="13399000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <created>1580251354650</created>
@@ -81,7 +77,14 @@
       <option name="project" value="LOCAL" />
       <updated>1580421164718</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="table de symboles">
+      <created>1580425179696</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1580425179696</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -100,6 +103,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="start" />
-    <option name="LAST_COMMIT_MESSAGE" value="start" />
+    <MESSAGE value="table de symboles" />
+    <option name="LAST_COMMIT_MESSAGE" value="table de symboles" />
   </component>
 </project>
