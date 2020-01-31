@@ -41,7 +41,7 @@ typedef enum {
     DUP, //duplicate tete de pile
 }pseudo_code_inst;
 
-static char int_table[30][10] ={
+static char inst_table[30][10] ={
         "ADD",
         "SUB",
         "MUL",
@@ -88,7 +88,20 @@ typedef struct _node{
 
 int nombre_ligne;
 node *pseudo_code;
-node *pseuo_code_courrant;
+node *pseudo_code_courrant;
 
-void initialiser_pseuo_code();
+void initialiser_pseudo_code();
+void ajouter_inst(pseudo_code_inst inst, float parametre);
+void ecrire_pseud_code(); //en binaire
+void ecrire_pseudo_code_texte();
+void lire_pseudo_code_texte();
+void afficher_pseudo_code();
+void afficher_pseudo_code_texte();
+
+void bze_pseudo_code_fixer();
+void nbz_pseudo_code_fixer();
+void brn_pseudo_code_fixer();
+void spd_pseudo_code_fixer();
+int pseudo_code_ligne_courrante();
+
 #endif //COMPILATION_PSEUDO_CODE_H
