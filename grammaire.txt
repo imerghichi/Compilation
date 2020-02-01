@@ -1,0 +1,44 @@
+for(var in seq) {
+  //insts
+}
+///
+while(cond) {
+  //insts
+}
+///
+if(cond) {
+  //insts
+}
+else {
+  //insts
+}
+///
+function_name <- function(var) {
+  //insts
+  return(var)
+}
+///
+CHIFFRE : 0|..|9
+LETTRE : a|..|z|A|..|Z
+NUM : CHIFFRE [ CHIFFRE ]
+ID : [ . | epsilon ] [LETTRE [ LETTRE | CHIFFRE | . | _ ]]
+AFFECTATION : ID AFFOP EXPR
+EXPR : TERM [ARTHOP TERM]
+TERM : ID | NUM | ( EXPR )
+SI : if ( CONDS ) { INST } [ else { INST } | epsilon ]
+BOUCLE : BOUCLE_FOR | BOUCLE_WHILE
+BOUCLE_WHILE : while ( COND ) { INST }
+BOUCLE_FOR : for ( SEG ) { INST }
+CONDS : [!]COND [ || COND | && COND]
+COND1 : [!]COND2
+COND2 : VAR RELOP VAR
+PRINT : print ( VAR )
+INPUT : ID <- readline(prompt"//msg")
+RELOP : == | != | < | <= | > | >=
+AFFOP : <- | <<- | = | -> | ->>
+ARTHOP : + | - | * | /
+FUNCTION : ID AFFOP function (VAR) { INSTS return(VAR)}
+VAL : LOGICAL | NUMERIC | INTEGER | COMPLEX | CHARACTER | RAW | VECTOR | LIST | MATRICE | ARRAY
+INSTS :
+SEG :
+COND :

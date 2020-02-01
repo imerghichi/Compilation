@@ -140,5 +140,6 @@ void spd_pseudo_code_fixer(){
             fixe = true;
         }
         node1 = node1->precedant;
+
     }
 }

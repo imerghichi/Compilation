@@ -1,5 +1,4 @@
 //
-// Created by taaha on 30/01/2020.
 //
 
 #ifndef COMPILATION_TABLE_DE_SYMBOLES_H
