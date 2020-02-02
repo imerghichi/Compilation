@@ -168,7 +168,6 @@ struct _symbole_stocke *table_de_symbole;
 int etat;
 int adresse_courrante;
 int adresse_offset
-symbole_type expression_type;
 
 
 

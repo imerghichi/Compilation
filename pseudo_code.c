@@ -21,7 +21,7 @@ void initialiser_pseudo_code(){
     pseudo_code_courrant = pseudo_code;
 
 }
-void ajouter_inst(pseudo_code_inst inst, float parametre){
+void ajouter_inst(pcode_inst inst, float parametre){
     //creer inst suivant
     pseudo_code_courrant->suivant=(node*) malloc(sizeof(node));
     pseudo_code_courrant->suivant->precedant =pseudo_code_courrant;
@@ -40,7 +40,7 @@ void ecrire_pseud_code(){
     ligne = malloc (sizeof(pseudo_code_ligne));
     while (node1 ! = NULL){
         ligne = &(node1->ligne);
-        fwrite(ligne, sizeof(pseudo_code_inst),1,file);
+        fwrite(ligne, sizeof(pcode_inst),1,file);
         node1 = node1->suivant;
     }
     fclose(file);

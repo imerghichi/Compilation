@@ -1,13 +1,9 @@
-//
-//
-
 #ifndef COMPILATION_PSEUDO_CODE_H
 #define COMPILATION_PSEUDO_CODE_H
 
 #include "utilites.h"
 
-
-typedef enum {
+typedef enum _pcode_inst {
     ADD,
     SUB,
     MUL,
@@ -38,7 +34,7 @@ typedef enum {
     JSR, // jump a sousroutine
     FRE, //free nombre en pile
     DUP, //duplicate tete de pile
-}pseudo_code_inst;
+}pcode_inst;
 
 static char inst_table[30][10] ={
         "ADD",
@@ -75,7 +71,7 @@ static char inst_table[30][10] ={
 
 typedef struct _pseudo_code_ligne{
     int nombre_ligne;
-    pseudo_code_inst inst;
+    pcode_inst inst;
     float parametre;
 } pseudo_code_ligne;
 
@@ -90,7 +86,7 @@ node *pseudo_code;
 node *pseudo_code_courrant;
 
 void initialiser_pseudo_code();
-void ajouter_inst(pseudo_code_inst inst, float parametre);
+void ajouter_inst(pcode_inst inst, float parametre);
 void ecrire_pseud_code(); //en binaire
 void ecrire_pseudo_code_texte();
 void lire_pseudo_code_texte();
