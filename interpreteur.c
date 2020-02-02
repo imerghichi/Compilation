@@ -5,7 +5,15 @@ int pc = 1; //compteur de pile
 booleen debug = false;
 
 int main(int argc, char** argv) {
+    strcpy(fichier_interpreteur_input_nom,"textinterp");
+    if(argc>1) debug = true;
 
+    initialiser_pseudo_code();
+    initialiser_pile();
+    lire_pseudo_code_texte();
+    afficher_pseudo_code_texte();
+    initialiser_pseudo_code();
+    return 0;
 
 }
 
@@ -93,7 +101,7 @@ void interpreter_pseuo_code(){
             case INT:
                 retenu = node_courrant->ligne.parametre;
                 for (int i =0; i< (int) retenu; i++) {
-                    ajouter_element(0;)
+                    ajouter_element(0);
                 }
                 pc++;
                 break;
