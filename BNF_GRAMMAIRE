@@ -1,0 +1,355 @@
+Main -> prog
+
+# LEXER ===================================================================================================================
+@{%
+const moo = require("moo");
+const lexer = moo.compile({
+  num:  /(?:\d+(?:[.]\d+)?|(?:[.]\d+))(?:[eE][+-]?\d+)?/,
+  id:  {
+      match: /(?:[a-zA-Z][a-zA-Z0-9._]*)|(?:[.][a-zA-Z._][a-zA-Z0-9._]*)|[.]/,
+      type: moo.keywords({
+        NULL_CONST: 'NULL',
+        NUM_CONST: [
+          'NA', 'Inf', 'NaN',
+          'NA_integer_', 'NA_real_', 'NA_character_', 'NA_complex_'
+        ],
+        BOOL:     ['TRUE', 'FALSE'],
+        FUNCTION: 'function',
+        WHILE:    'while',
+        REPEAT:   'repeat',
+        FOR:      'for',
+        IF:       'if',
+        IN:       'in',
+        ELSE:     'else',
+        NEXT:     'next',
+        BREAK:    'break'
+      })
+  },
+  char:  /(?:"(?:[^\\"]|\\"|\\)*")|(?:'(?:[^\\']|\\'|\\)*')/,
+  quote: /(?:`.*`)/,
+
+  special:   /%[^%]*%/,
+  nsGetInt:  ":::",
+  nsGet:     "::",
+  seq:       ":",
+  lbb:       "[[",
+  dollar:    "$",
+  at:        "@",
+  power:     "^",
+  times:     "*",
+  divide:    "/",
+  tilda:     "~",
+  question:  "?",
+  leftAssign2:  "<<-",
+  leftAssign:   "<-",
+  rightAssign2: "->>",
+  rightAssign:  "->",
+  or2:       "||",
+  or:        "|",
+  and2:      "&&",
+  and:       "&",
+  le:        "<=",
+  lt:        "<",
+  ge:        ">=",
+  gt:        ">",
+  eq:        "==",
+  neq:       "!=",
+  eqAssign:  "=",
+  not:       "!",
+  minus:     "-",
+  plus:      "+",
+
+  lrparen:  "(",
+  rrparen:  ")",
+  lsparen:  '[',
+  rsparen:  ']',
+  lcparen:  '{',
+  rcparen:  '}',
+  semicolon: ";",
+  comma:     ",",
+
+  newline: {match: "\n", lineBreaks: true},
+  ws:      {match: /\s/, lineBreaks: true}
+});
+%}
+
+@lexer lexer
+
+
+# AST ====================================================================================================================
+@{%
+function exprlistAST(x) {
+  var [[lhs, token, rhs]] = x;
+  token.list = flatten(token.list);
+  return token;
+}
+
+function formlistAST(x) {
+  return (x === null ? {type: "null", value: "NULL"} : flatten(x));
+}
+
+const sublistAST = formlistAST;
+
+function opAST(d) {
+  return {type: "operator", op: d[0].value};
+}
+
+function binaryOpAST(lhs, op, rhs) {
+  return {type: "binary_operation", lhs: lhs, operator: op, rhs: rhs}
+}
+
+function unaryOpAST(operator, operand) {
+  return {type: "unary_operation", operator: operator, operand: operand}
+}
+
+function debug(x) {
+  console.log("DEBUG-BEGIN");
+  console.log(x);
+  console.log("DEBUG-END");
+  return x;
+}
+
+function eqAST(sym, val) {
+  return {type: "assignment", variable: sym, value: val};
+}
+
+// Helper functions -------------------------------------------------------------------------------------------------------
+function flatten(arr) {
+  // Reference: https://stackoverflow.com/questions/10865025/merge-flatten-an-array-of-arrays
+  return arr.reduce(function (flat, toFlatten) {
+    return flat.concat(Array.isArray(toFlatten) ? flatten(toFlatten) : toFlatten);
+  }, []);
+}
+%}
+
+
+# Main ====================================================================================================================
+
+# Structures based on `expr_or_assign` / `expr` ---------------------------------------------------------------------------
+
+prog ->
+  NEWLINE                                {% id %}
+| (expr_or_assign _ NEWLINE)             {% ([[token, s1, s2]]) => token %}
+| (expr_or_assign _ SEMICOLON)           {% ([[token, s1, s2]]) => token %}
+
+exprlist ->
+  expr_or_assign                         {% d => ({type: "exprlist", list: [ d[0] ] }) %}
+| (exprlist _ SEMICOLON expr_or_assign)  {% ([[expr_ls, s1, s2, el]]) => ({type: "exprlist", list: [expr_ls.list, el]}) %}
+| (exprlist _ SEMICOLON)                 {% ([[expr_ls, s1, s2]]) => expr_ls %}
+| (exprlist _ NEWLINE expr_or_assign)    {% ([[expr_ls, s1, s2, el]]) => ({type: "exprlist", list: [expr_ls.list, el]}) %}
+| (exprlist _ NEWLINE)                   {% ([[expr_ls, s1, s2]]) => expr_ls %}
+
+expr_or_assign ->  (expr | equal_assign) {% ([[d]]) => d %}
+
+equal_assign   ->  (expr _ EQ_ASSIGN _ expr_or_assign)  {% ([[lhs, s1, op, s2, rhs]]) => eqAST(lhs, rhs) %}
+
+cond    -> (LR expr RR)                  {% ([[lhs, token, rhs]]) => token %}
+
+ifcond  -> (LR expr RR)                  {% ([[lhs, token, rhs]]) => token %}
+
+forcond -> (LR _ SYMBOL __ IN __ expr _ RR)  {% ([[s1, s2, sym, s4, s5, s6, expr, s7, s8]]) =>
+                                                  ({type: "for_cond", sym: sym, expr: expr}) %}
+
+sublist ->
+   sub                                   {% d => d %}
+|  sublist _ %comma _ sub                {% ([lst, s2, s3, s4, el]) => ([lst, el]) %}
+
+sub ->
+   expr                                  {% id %}
+|  (SYMBOL _ EQ_ASSIGN)                  {% ([[sym, s1, eq]]) => eqAST(sym, null) %}
+|  (SYMBOL _ EQ_ASSIGN _ expr)           {% ([[sym, s1, eq, s2, value]]) => eqAST(sym, value) %}
+|  (STR_CONST _ EQ_ASSIGN)               {% ([[sym, s1, eq]]) => eqAST(sym, null) %}
+|  (STR_CONST _ EQ_ASSIGN _ expr)        {% ([[sym, s1, eq, s2, value]]) => eqAST(sym, value) %}
+|  (NULL_CONST _ EQ_ASSIGN)              {% ([[sym, s1, eq]]) => eqAST(sym, null) %}
+|  (NULL_CONST _ EQ_ASSIGN _ expr)       {% ([[sym, s1, eq, s2, value]]) => eqAST(sym, value) %}
+
+# formlist is used only in function definition
+formlist ->
+   SYMBOL                                {% d => d %}
+|  (SYMBOL _ EQ_ASSIGN _ expr)           {% ([[sym, s1, eq, s2, value]]) => [eqAST(sym, value)] %}
+|  (formlist _ %comma _ SYMBOL)          {% ([[lst, s2, s3, s4, el]]) => ([lst, el]) %}
+|  (formlist _ %comma _ SYMBOL _ EQ_ASSIGN _ expr)  {% ([[lst, s2, s3, s4, sym, s6, eq, s8, value]]) => ([lst, eqAST(sym, value)]) %}
+
+
+# Expression --------------------------------------------------------------------------------------------------------------
+
+expr -> token_18                         {% id %}
+
+# Operator Precedence climbing
+token_18 ->
+  (token_16 _ QUESTION _ token_16)       {% ([[lhs, s1, op, s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+| (QUESTION _ token_16)                  {% ([[op, _, token]]) => unaryOpAST(op, token) %}
+| token_16                               {% id %}
+
+token_16 ->
+  (token_15 _ LEFT_ASSIGN _ token_16)    {% ([[lhs, s1, op, s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+|  token_15                              {% id %}
+
+token_15 ->
+  (token_15 _ RIGHT_ASSIGN _ token_14)   {% ([[lhs, s1, op, s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+|  token_14                              {% id %}
+
+token_14 ->
+  (token_14 _ TILDA _ token_13)          {% ([[lhs, s1, op, s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+| (TILDA _ token_13)                     {% ([[op, _, token]]) => unaryOpAST(op, token) %}
+|  token_13                              {% id %}
+
+token_13 ->
+  (token_13 _ (OR | OR2) _ token_12)     {% ([[lhs, s1, [op], s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+|  token_12                              {% id %}
+
+token_12 ->
+  (token_12 _ (AND | AND2) _ token_11)   {% ([[lhs, s1, [op], s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+|  token_11                              {% id %}
+
+token_11 ->
+   (NOT _ token_10)                      {% ([[op, _, token]]) => unaryOpAST(op, token) %}
+|  token_10                              {% id %}
+
+token_10 ->
+  (token_9 _ (LT | GT | LE | GE | EQ | NEQ) _ token_9)  {% ([[lhs, s1, [op], s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+|  token_9                               {% id %}
+
+token_9 ->
+  (token_9 _ (PLUS | MINUS) _ token_8)   {% ([[lhs, s1, [op], s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+|  token_8                               {% id %}
+
+token_8 ->
+  (token_8 _ (TIMES | DIVIDE) _ token_7) {% ([[lhs, s1, [op], s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+|  token_7                               {% id %}
+
+token_7 ->
+  (token_7 _ SPECIAL _ token_6)          {% ([[lhs, s1, op, s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+|  token_6                               {% id %}
+
+token_6 ->
+  (token_6 _ SEQ _ token_5)              {% ([[lhs, s1, op, s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+|  token_5                               {% id %}
+
+token_5 ->
+   ((MINUS | PLUS) _ token_4)            {% ([[[op], _, token]]) => unaryOpAST(op, token) %}
+|  token_4                               {% id %}
+
+token_4 ->
+  (token_2 _ POWER _ token_4)            {% ([[lhs, s1, op, s2, rhs]]) => binaryOpAST(lhs, op, rhs) %}
+|  token_2                               {% id %}
+
+
+token_2 ->
+  (FUNCTION _ %lrparen _ %rrparen _ expr_or_assign)  {% ([[s1, s2, s3, args, s4, s5, body]]) =>
+                                                         ({type: "function_definition", args: formlistAST(null), body: body}) %}
+| (FUNCTION _ LR formlist RR _ expr_or_assign)       {% ([[s1, s2, s3, args, s4, s5, body]]) =>
+                                                         ({type: "function_definition", args: formlistAST(args), body: body}) %}
+| (IF _ ifcond _ expr_or_assign)                     {% ([[s1, s2, cond, s4, yes]]) =>
+                                                         ({type: "if_statement", cond: cond, yes: yes, no: null}) %}
+| (IF _ ifcond _ expr_or_assign _ ELSE _ expr_or_assign)  {% ([[s1, s2, cond, s4, yes, s5, s6, s7, no]]) =>
+                                                              ({type: "if_statement", cond: cond, yes: yes, no: no}) %}
+| (FOR _ forcond _ expr_or_assign)       {% ([[s1, s2, cond, s4, body]]) => ({ type: "for_loop", cond: cond, body: body }) %}
+| (WHILE _ cond _ expr_or_assign)        {% ([[s1, s2, cond, s4, body]]) => ({ type: "while_loop", cond: cond, body: body }) %}
+| (REPEAT _ expr_or_assign)              {% ([[s1, s2, body]]) => ({ type: "repeat_loop", body: body }) %}
+| (bcns_expr _ %lrparen _ %rrparen)           {% ([[fun, s1, s2, args, s3]]) => ({ type: "function_call", fun: fun, args: sublistAST(null) }) %}
+| (bcns_expr _ LR sublist RR)                 {% ([[fun, s1, s2, args, s3]]) => ({ type: "function_call", fun: fun, args: sublistAST(args) }) %}
+| (bcns_expr _ %lbb _ %rsparen RS)            {% ([[sym, s1, s2, s_list, s4, s5]]) =>
+                                             ({ type: "extract2_call", sym: sym, args: sublistAST([{type: "double", value: 1}]) }) %}
+| (bcns_expr _ LBB sublist RS RS)             {% ([[sym, s1, s2, s_list, s4, s5]]) => ({ type: "extract2_call", sym: sym, args: sublistAST(s_list) }) %}
+| (bcns_expr _ %lsparen _ %rsparen)           {% ([[sym, s1, s2, s_list, s4]]) => ({ type: "extract_call", sym: sym, args: sublistAST(null)}) %}
+| (bcns_expr _ LS sublist RS)                 {% ([[sym, s1, s2, s_list, s4]]) => ({ type: "extract_call", sym: sym, args: sublistAST(s_list)}) %}
+| (%lcparen _ %rcparen)                  {% d => ({type: "null", value: "NULL"}) %}
+| (LC exprlist RC)                       {% exprlistAST %}
+| (LR expr_or_assign RR)                 {% ([[lhs, token, rhs]]) => token %}
+| token_0                                {% id %}
+
+# bracketed compound or naked simple expression
+bcns_expr ->
+  (LR expr RR)                           {% ([[lr, token, rr]]) => token %}
+| token_0                                {% id %}
+
+token_0 ->
+  (NUM_CONST | NUM | BOOL)               {% ([[d]]) => d %}
+| STR_CONST                              {% id %}
+| NULL_CONST                             {% id %}
+| SYMBOL                                 {% id %}
+| (SYMBOL _ NS_GET _ SYMBOL)             {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (SYMBOL _ NS_GET _ STR_CONST)          {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (STR_CONST _ NS_GET _ SYMBOL)          {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (STR_CONST _ NS_GET _ STR_CONST)       {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (SYMBOL _ NS_GET_INT _ SYMBOL)         {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (SYMBOL _ NS_GET_INT _ STR_CONST)      {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (STR_CONST _ NS_GET_INT _ SYMBOL)      {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (STR_CONST _ NS_GET_INT _ STR_CONST)   {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (expr _ DOLLAR _ SYMBOL)               {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (expr _ DOLLAR _ STR_CONST)            {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (expr _ AT _ SYMBOL)                   {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| (expr _ AT _ STR_CONST)                {% ([[e1, s1, op, s2, e2]]) => binaryOpAST(e1, op, e2) %}
+| NEXT                                   {% id %}
+| BREAK                                  {% id %}
+
+
+
+# Tokens ============================================================================
+
+# Operators -------------------------------------------------------------------------
+OP             ->  %OP              {% opAST %}
+UOP            ->  %unaryOP         {% opAST %}
+BOP            ->  %binaryOP        {% opAST %}
+EQ_ASSIGN      ->  %eqAssign        {% opAST %}
+NS_GET_INT     ->  %nsGetInt        {% opAST %}
+NS_GET         ->  %nsGet           {% opAST %}
+SEQ            ->  %seq             {% opAST %}
+MINUS          ->  %minus           {% opAST %}
+PLUS           ->  %plus            {% opAST %}
+POWER          ->  %power           {% opAST %}
+SPECIAL        ->  %special         {% opAST %}
+TIMES          ->  %times           {% opAST %}
+DIVIDE         ->  %divide          {% opAST %}
+TILDA          ->  %tilda           {% opAST %}
+QUESTION       ->  %question        {% opAST %}
+LEFT_ASSIGN    ->  %leftAssign   {% opAST %} |  %leftAssign2   {% opAST %}
+RIGHT_ASSIGN   ->  %rightAssign  {% opAST %} |  %rightAssign2  {% opAST %}
+OR             ->  %or              {% opAST %}
+OR2            ->  %or2             {% opAST %}
+AND            ->  %and             {% opAST %}
+AND2           ->  %and2            {% opAST %}
+NOT            ->  %not             {% opAST %}
+LT             ->  %lt              {% opAST %}
+LE             ->  %le              {% opAST %}
+GT             ->  %gt              {% opAST %}
+GE             ->  %ge              {% opAST %}
+EQ             ->  %eq              {% opAST %}
+NEQ            ->  %neq             {% opAST %}
+DOLLAR         ->  %dollar          {% opAST %}
+AT             ->  %at              {% opAST %}
+
+# Parenthesis
+LR             ->  %lrparen _       {% d => ({type: "parenthesis", value: "("}) %}
+RR             ->  _ %rrparen       {% d => ({type: "parenthesis", value: ")"}) %}
+LC             ->  %lcparen _       {% d => ({type: "parenthesis", value: "{"}) %}
+RC             ->  _ %rcparen       {% d => ({type: "parenthesis", value: "}"}) %}
+LS             ->  %lsparen _       {% d => ({type: "parenthesis", value: "["}) %}
+RS             ->  _ %rsparen       {% d => ({type: "parenthesis", value: "]"}) %}
+LBB            ->  %lbb _           {% d => ({type: "parenthesis", value: "[["}) %}
+
+# Keywords
+FUNCTION       ->  %FUNCTION
+WHILE          ->  %WHILE
+REPEAT         ->  %REPEAT
+FOR            ->  %FOR
+IF             ->  %IF
+IN             ->  %IN
+ELSE           ->  %ELSE
+NEXT           ->  %NEXT            {% d => ({type: "next"})  %}
+BREAK          ->  %BREAK           {% d => ({type: "break"}) %}
+
+# Idenifiers, Numbers, Characters and Special symbols -------------------------------
+SYMBOL         ->  %id              {% d => ({type: "symbol", value: d[0].value}) %}
+NUM            ->  %num             {% d => ({type: "double", value: Number(d[0].value)}) %}
+STR_CONST      ->  %char            {% d => ({type: "character", value: d[0].value}) %}
+BOOL           ->  %BOOL            {% d => ({type: "boolean", value: d[0].value}) %}
+NUM_CONST      ->  %NUM_CONST       {% d => ({type: "num_const", value: d[0].value}) %}
+NULL_CONST     ->  %NULL_CONST      {% d => ({type: "null", value: d[0].value}) %}
+
+# Primitives -----------------------------------------------------------------------
+_ -> %ws:*                          {% d => d[0].map(x => x.value).join("") %}
+__ -> %ws:+                         {% d => d[0].map(x => x.value).join("") %}
+NEWLINE -> %newline _               {% d => ({type: "newline", value: "\n"}) %}
+SEMICOLON -> %semicolon _           {% d => ({type: "semicolon", value: ";"}) %}

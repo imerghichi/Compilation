@@ -10,14 +10,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="981998c8-de4c-478a-a288-fe8580f0b149" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/BNF_GRAMMAIRE" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analyseur_syntaxique.c" beforeDir="false" afterPath="$PROJECT_DIR$/analyseur_syntaxique.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/analyseur_syntaxique.h" beforeDir="false" afterPath="$PROJECT_DIR$/analyseur_syntaxique.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grammaire.txt" beforeDir="false" afterPath="$PROJECT_DIR$/grammaire.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pseudo_code.c" beforeDir="false" afterPath="$PROJECT_DIR$/pseudo_code.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pseudo_code.h" beforeDir="false" afterPath="$PROJECT_DIR$/pseudo_code.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilites.h" beforeDir="false" afterPath="$PROJECT_DIR$/utilites.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -78,7 +71,9 @@
       <workItem from="1580498478167" duration="5943000" />
       <workItem from="1580509342318" duration="731000" />
       <workItem from="1580593666300" duration="11770000" />
-      <workItem from="1580647206559" duration="3366000" />
+      <workItem from="1580647206559" duration="3735000" />
+      <workItem from="1581028483383" duration="5000" />
+      <workItem from="1581343931315" duration="533000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <created>1580251354650</created>
@@ -150,7 +145,14 @@
       <option name="project" value="LOCAL" />
       <updated>1580602442315</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="pile interpreter">
+      <created>1580680604060</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1580680604060</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
