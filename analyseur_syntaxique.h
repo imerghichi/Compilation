@@ -18,6 +18,5 @@ static booleen expr_semicolon();
 
 *
  */
- static booleen exp_or_assin();
 
 #endif //COMPILATION_ANALYSEUR_SYNTAXIQUE_H

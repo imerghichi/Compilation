@@ -5,7 +5,7 @@
 #define COMPILATION_TABLE_DE_SYMBOLES_H
 
 #include "utilites.h"
-void initiliser_table_symobole();
+;void initiliser_table_symobole();
 booleen ajouter_symbole(symbole_type symboleType);
 int symbole_existants();
 int symbole_existe(char *symbole);

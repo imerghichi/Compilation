@@ -9,7 +9,7 @@
 int index_courrant = 0;
 
 
-static booleen est_special(){r;e
+static booleen est_special(){
     switch (char_courrant){
         case ':':
         case '+':
@@ -61,7 +61,7 @@ static booleen est_separateur(){
     }
 }
 static booleen est_comment(){
-    if(char_courrant == "#") return true;
+    if(char_courrant == '#') return true;
     return false;
 }
 static booleen est_double_quote(){
@@ -99,14 +99,14 @@ void sym_Suivant() {
         else if (est_nombre()) lireNombre();
         else if (est_comment()) lireComment();
         else if (est_car()) lireCar();
-        else if (est_special()) lire_special
+        else if (est_special()) lire_special();
         else if (est_double_quote()) lire_string();
         else if (est_simple_quote()) lireCar();
         else if  (est_separateur()) lire_separateur();
         else if (est_nouvelle_ligne()) lire_nouvelle_ligne();
         else if (est_car()) lireMot();
         else lire_erreur();
-    }while (symbole_courrant.code = SEPARATOR_TOKEN)
+    }while (symbole_courrant.code = SEPARATOR_TOKEN);
 
 }
 void init_sym(){
@@ -116,7 +116,7 @@ void init_sym(){
     caractere_suivant();
 }
 
-static void assign_token(TOKEN token){
+void assign_token(TOKEN token){
 
     symbole_courrant.mot[index_courrant -1] = '\0';
     if (token != NOTHING){
@@ -140,7 +140,7 @@ static void assign_token(TOKEN token){
         }
     }
 }
-static void caractere_suivant(){
+void caractere_suivant(){
     char_courrant = fgetc (fichier);
 
     symbole_courrant.mot[index_courrant] = char_courrant;
@@ -149,18 +149,18 @@ static void caractere_suivant(){
     // verifier qu on a pas depasser le buffer
     index_courrant %= LONGUEUR_MOT -1;
 }
-static void flush_mot(){
+void flush_mot(){
     index_courrant = 1;
     symbole_courrant.mot[0] = char_courrant;
     symbole_courrant.mot[1] = '\0';
 }
 
-static void lire_numeral(){
+void lire_numeral(){
     do{
         caractere_suivant();
-    }while (est_nombre())
+    }while (est_nombre());
 }
-static void lire_decimal(){
+void lire_decimal(){
     if(est_point_car()){
         caractere_suivant();
         if(est_nombre()){
@@ -177,7 +177,7 @@ static void lire_decimal(){
         assign_token(NA_INTEGER_TOKEN);
     }
 }
-static void point_car(){
+void point_car(){
     caractere_suivant();
     assign_token(POINT_TOKEN);
 }
@@ -262,20 +262,20 @@ void lireMot(){
 
     assign_token(NOTHING);
 }
-static void lire_separateur(){
+void lire_separateur(){
     caractere_suivant();
     assign_token(SEPARATOR_TOKEN);
 }
-static void lire_erreur(){
+void lire_erreur(){
     raise_erreur(CARACTERE_INCONNU);
     caractere_suivant();
 
 }
-static void lireNombre(){
+void lireNombre(){
     lire_numeral();
     lire_decimal();
 }
-static void lireComment(){
+void lireComment(){
     if(est_comment()){
         caractere_suivant();
         while (! char_courrant != '\n' && !est_eof()){
@@ -288,21 +288,30 @@ static void lireComment(){
     }
 
 }
-static void lireCar(){
+void lireCar(){
     caractere_suivant();
     if(est_car() || est_nombre())caractere_suivant();
-    else if
+    else  {
+        raise_erreur(CARACTERE_DEMANDE);
+        return;
+    }
+    if (est_simple_quote()){
+        caractere_suivant();
+        assign_token(CHAR_TOKEN);
+    } else{
+        raise_erreur(SIMPLE_QUOTE_ERROR);
+    }
 
 }
-static void lire_end_of_file (){
+void lire_end_of_file (){
     strcpy(symbole_courrant.mot,"END OF FILE");
     assign_token(EOF_TOKEN);
 }
-static void lire_nouvelle_ligne (){
+void lire_nouvelle_ligne (){
     ligne_courrante++;
     caractere_suivant();
 }
-static void lire_string(){
+void lire_string(){
     sym_Suivant();
     while (!est_double_quote()){
         sym_Suivant();
@@ -310,12 +319,9 @@ static void lire_string(){
     sym_Suivant();
     assign_token(STRING_TOKEN);
 }
-static void lire special(){
+void lire_special(){
     sym_Suivant();
     if (est_deuxieme_special()) sym_Suivant();
-
     assign_token(NOTHING);
-
-
 }
 

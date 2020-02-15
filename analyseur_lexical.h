@@ -6,13 +6,11 @@
 #define COMPILATION_ANALYSEUR_LEXICAL_H
 
 #include "utilites.h"
-
-static char mots_cles[NOMBRE_TOKENS][30] ={
+;static char mots_cles[NOMBRE_TOKENS][30] ={
         "if",
         "else",
         "repeat",
         "while",
-
         "for",
         "in",
         "break",
@@ -21,11 +19,7 @@ static char mots_cles[NOMBRE_TOKENS][30] ={
         "null",
         "inf",
         "NAN",
-
-
         "-",
-
-
 };
 void lireMot();
 static void lire_separateur();
@@ -36,7 +30,7 @@ static void lireCar();
 static void lire_end_of_file ();
 static void lire_nouvelle_ligne ();
 static void lire_string();
-static void lire special;
+static void lire_special();
 
 static booleen est_special();
 static booleen est_deuxieme_special();

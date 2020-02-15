@@ -38,7 +38,7 @@ void ecrire_pseud_code(){
 
     pseudo_code_ligne *ligne;
     ligne = malloc (sizeof(pseudo_code_ligne));
-    while (node1 ! = NULL){
+    while (node1 != NULL){
         ligne = &(node1->ligne);
         fwrite(ligne, sizeof(pcode_inst),1,file);
         node1 = node1->suivant;
@@ -52,7 +52,7 @@ void ecrire_pseudo_code_texte(){
 
     pseudo_code_ligne *ligne;
     ligne = malloc (sizeof(pseudo_code_ligne));
-    while (node1 ! = NULL){
+    while (node1 != NULL){
         ligne = &(node1->ligne);
         fprintf(file, "%i %i %f \n", ligne->nombre_ligne, ligne->inst, ligne->parametre);
         node1 = node1->suivant;

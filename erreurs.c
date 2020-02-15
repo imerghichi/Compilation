@@ -7,6 +7,8 @@
 char* erreurs[ERREUR_NOMBRE] ={
         "caractere inconnu",
         "single quote est manquante",
+        "caractere exige",
+        "simple quote symbol exige",
 };
 
 void raise_erreur(erreurs_codes erreursCodes){

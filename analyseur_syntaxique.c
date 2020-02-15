@@ -29,7 +29,10 @@ static booleen prog(){
     etat = PROCEDURE_NAME;
     int table_de_symboles_debut = table_de_symboles_size;
     if(newline()) return true;
-    if(exp_or_assin()) return true;
     return false;
+}
+
+static booleen newline(){
+    return true;
 }
 

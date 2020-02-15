@@ -1,9 +1,9 @@
 all: compilateur
 
-compilateur: compilateur.o analyseur_lexical.o global.o analyseur_syntaxique.o table_de_symboles.o pseudo_code.o
+compilateur: compilateur.o analyseur_lexical.o utilites.o analyseur_syntaxique.o table_de_symboles.o pseudo_code.o
 	gcc -o compilateur compilateur.o analyseur_lexical.o analyseur_syntaxique.o erreurs.o table_de_symboles.o pseudo_code.o -g
 
-compilateur.o: compilateur.c analyseur_syntaxique.h global.h analyseur_syntaxique.h table_de_symboles.h pseudo_code.h
+compilateur.o: compilateur.c analyseur_syntaxique.h utilites.h analyseur_syntaxique.h table_de_symboles.h pseudo_code.h
 	gcc -o compilateur.o -c compilateur.c -g
 
 analyseur_syntaxique.o: analyseur_syntaxique.c analyseur_syntaxique.h analyseur_lexical.h utilites.h erreurs.h table_de_symboles.h

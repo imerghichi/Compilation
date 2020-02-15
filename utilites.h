@@ -74,6 +74,7 @@ typedef enum _TOKEN {
     SEPARATOR_TOKEN ,
     STRING_TOKEN ,
     POINT_TOKEN,
+    CHAR_TOKEN,
 
 
 
@@ -172,7 +173,7 @@ struct _symbole_stocke *table_de_symbole;
 
 int etat;
 int adresse_courrante;
-int adresse_offset
+int adresse_offset;
 
 
 

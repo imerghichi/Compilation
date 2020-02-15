@@ -90,7 +90,7 @@ int symbole_table_free(int start){
     int i =start;
     int r=0;
     while (table_de_symbole[i].offset>=adresse_offset && i<=table_de_symboles_size){
-        if((table_de_symbole[i].type == TVAR || table_de_symbole[i] == TCHAR || table_de_symbole[i]==TDEC || table_de_symbole[i] ==TINT) && (table_de_symbole[i]).offset == adresse_offset) r++;
+        if((table_de_symbole[i].type == TVAR || table_de_symbole[i].type == TCHAR || table_de_symbole[i].type==TDEC || table_de_symbole[i].type ==TINT) && (table_de_symbole[i]).offset == adresse_offset) r++;
         if(table_de_symbole->end != 0){
             r += table_de_symbole[i].end - table_de_symbole[i].start; //delete a matrix
         }
