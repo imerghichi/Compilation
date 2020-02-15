@@ -4,41 +4,20 @@
 #define COMPILATION_ANALYSEUR_SYNTAXIQUE_H
 
 #include "analyseur_lexical.h"
+#include "table_de_symboles.h"
+#include "pseudo_code.h"
 
-static booleen FUNCTION();
-static booleen FUNTION_CALL();
-static booleen RETURN();
+static booleen MAIN();
 
-static booleen EXPRESSION();
-static booleen RELATION(); //RELATION =  SIMPLE_EXPRESSION [ RELATION_OPERATOR SIMPLE_EXPRESSION ]
-static booleen TERM();
-static booleen FACTEUR();
-static booleen PRIMARY();
+static booleen prog();
 
-static booleen ADDING(); //puls minus
-static  booleen MULTIPLYING(); // multiplying //dividing// modulo
-static booleen CONDITION();
+static booleen newline();
+/*
+static booleen exp_new_line();
+static booleen expr_semicolon();
 
-static booleen OPERATION();
-
-
-static booleen WHILE_LOOP();
-static booleen FOR_LOOP();
-//static booleen CASE();
-
-static booleen SEQUENCE_OF_STATEMANT();
-static booleen SIMPLE_STATEMENT();
-static booleen STATEMENT();
-
-static booleen AFFETATION();
-
-static booleen IF();
-
-static booleen IO();
-static booleen WRITE();
-static booleen READ();
-static booleen EXIT();
-
-
+*
+ */
+ static booleen exp_or_assin();
 
 #endif //COMPILATION_ANALYSEUR_SYNTAXIQUE_H

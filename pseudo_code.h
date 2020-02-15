@@ -3,7 +3,7 @@
 
 #include "utilites.h"
 
-typedef enum _pcode_inst {
+;typedef enum _pcode_inst {
     ADD,
     SUB,
     MUL,
@@ -34,7 +34,7 @@ typedef enum _pcode_inst {
     JSR, // jump a sousroutine
     FRE, //free nombre en pile
     DUP, //duplicate tete de pile
-}pcode_inst;
+} pcode_inst;
 
 static char inst_table[30][10] ={
         "ADD",

@@ -2,39 +2,34 @@
 //
 
 #include "analyseur_syntaxique.h"
+#include "erreurs.h"
+//Main := prog
+static booleen MAIN(){
+    //initialiser
+    init_sym();
+    initiliser_table_symobole();
+    initialiser_pseudo_code();
 
-static booleen FUNCTION(){
-
+    //lire 1er token
+    sym_Suivant();
+    booleen resultat = false;
+    adresse_offset = 0;
+    //trouver  la grammaire a executer
+    if(prog()) resultat= true;
+    ajouter_inst(LDA,get_premiere_procedure_adresse());//ajouter inst au pseudo code
+    ajouter_inst(JSR,0);
+    ajouter_inst(HLT, 0);
+    //afficher table des symboles
+    afficher_table_symboles();
+    ecrire_pseudo_code_texte();
+    return resultat;
 }
-static booleen FUNTION_CALL();
-static booleen RETURN();
+//prog := newline | (expression_or_assign _newline) |(expression_or_assign _semicolon)
+static booleen prog(){
+    etat = PROCEDURE_NAME;
+    int table_de_symboles_debut = table_de_symboles_size;
+    if(newline()) return true;
+    if(exp_or_assin()) return true;
+    return false;
+}
 
-static booleen EXPRESSION();
-static booleen RELATION(); //RELATION =  SIMPLE_EXPRESSION [ RELATION_OPERATOR SIMPLE_EXPRESSION ]
-static booleen TERM();
-static booleen FACTEUR();
-static booleen PRIMARY();
-
-static booleen ADDING(); //puls minus
-static  booleen MULTIPLYING(); // multiplying //dividing// modulo
-static booleen CONDITION();
-
-static booleen OPERATION();
-
-
-static booleen WHILE_LOOP();
-static booleen FOR_LOOP();
-//static booleen CASE();
-
-static booleen SEQUENCE_OF_STATEMANT();
-static booleen SIMPLE_STATEMENT();
-static booleen STATEMENT();
-
-static booleen AFFETATION();
-
-static booleen IF();
-
-static booleen IO();
-static booleen WRITE();
-static booleen READ();
-static booleen EXIT();

@@ -12,6 +12,10 @@
 
 #define LONGUEUR_MOT 250
 #define NOMBRE_TOKENS 46
+#define PROCEDURE_NAME 0
+#define VARIABLE_NAME 1
+#define OTHER_NAMES 2
+
 
 typedef enum _booleen {
     false, true
@@ -134,6 +138,7 @@ typedef enum _symbole_type {
     TINT,
     TDEC,
     TCHAR,
+    TPROC,
 } symbole_type;
 
 struct _symbole_stocke {

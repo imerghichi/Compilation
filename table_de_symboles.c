@@ -123,5 +123,11 @@ static void changer_size(){
     table_de_symboles_max_size += 20;
     table_de_symbole = realloc(table_de_symbole, table_de_symboles_max_size * sizeof(struct _symbole_stocke));
 }
+int get_premiere_procedure_adresse(){
+    int i =0;
+    while (table_de_symbole[i].type != TPROC) i++;
+    return table_de_symbole[i].adresse;
+}
+
 
 

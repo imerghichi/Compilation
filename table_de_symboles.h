@@ -21,6 +21,7 @@ void setSymbole_end(int end);
 
 int symbole_table_free(int start);
 
+int get_premiere_procedure_adresse();
 booleen est_symbole_courrant_constant();
 symbole_type getSymbole_courrant_type();
 int getSymbole_adresse();
