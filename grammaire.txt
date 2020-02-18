@@ -1,3 +1,19 @@
+
+prog ->
+  NEWLINE                                {% id %}
+| (expr_or_assign _ NEWLINE)             {% ([[token, s1, s2]]) => token %}
+| (expr_or_assign _ SEMICOLON)           {% ([[token, s1, s2]]) => token %}
+
+exprlist ->
+  expr_or_assign                         {% d => ({type: "exprlist", list: [ d[0] ] }) %}
+| (exprlist _ SEMICOLON expr_or_assign)  {% ([[expr_ls, s1, s2, el]]) => ({type: "exprlist", list: [expr_ls.list, el]}) %}
+| (exprlist _ SEMICOLON)                 {% ([[expr_ls, s1, s2]]) => expr_ls %}
+| (exprlist _ NEWLINE expr_or_assign)    {% ([[expr_ls, s1, s2, el]]) => ({type: "exprlist", list: [expr_ls.list, el]}) %}
+| (exprlist _ NEWLINE)                   {% ([[expr_ls, s1, s2]]) => expr_ls %}
+
+expr_or_assign ->  (expr | equal_assign) {% ([[d]]) => d %}
+
+///////////////////////////////
 for(var in seq) {
   //insts
 }

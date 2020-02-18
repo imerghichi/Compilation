@@ -27,7 +27,18 @@ typedef enum _booleen {
 typedef enum _TOKEN {
     NOTHING ,
     EOF_TOKEN ,
+    NOT_EGAL_TOKEN,
+    MINUS_TOKEN,
     NUM_TOKEN ,
+    PRINT_TOKEN,
+    READ_TOKEN,
+    CAT_TOKEN,
+    BO_TOKEN,
+    BF_TOKEN,
+    DOUBLE_POINT_TOKEN,
+    VI_TOKEN,
+    RL_TOKEN,
+    PV_TOKEN,
     ERREUR_TOKEN ,
     ID_TOKEN ,
     IF_TOKEN ,
@@ -75,7 +86,8 @@ typedef enum _TOKEN {
     STRING_TOKEN ,
     POINT_TOKEN,
     CHAR_TOKEN,
-
+    PROMPT_TOKEN,
+    DOUBLE_QUOTE_TOKEN,
 
 
     /*  ABS_TOKEN = 1019,
