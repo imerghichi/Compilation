@@ -27,7 +27,7 @@ static booleen ARGUMENTS();
 static booleen ARGUMENT();
 static booleen ADD_OP();
 static booleen CONDITION();
-static booleen ELSEIF();
+static booleen ELSEF();
 static booleen FOR_LOOP();
 static booleen STRING();
 static booleen COND();

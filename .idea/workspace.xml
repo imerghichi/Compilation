@@ -10,16 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="981998c8-de4c-478a-a288-fe8580f0b149" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/test.r" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analyseur_syntaxique.c" beforeDir="false" afterPath="$PROJECT_DIR$/analyseur_syntaxique.c" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/analyseur_syntaxique.h" beforeDir="false" afterPath="$PROJECT_DIR$/analyseur_syntaxique.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/compilateur.c" beforeDir="false" afterPath="$PROJECT_DIR$/compilateur.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/erreurs.c" beforeDir="false" afterPath="$PROJECT_DIR$/erreurs.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/erreurs.h" beforeDir="false" afterPath="$PROJECT_DIR$/erreurs.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/grammaire.txt" beforeDir="false" afterPath="$PROJECT_DIR$/grammaire.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/textinterp" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utilites.h" beforeDir="false" afterPath="$PROJECT_DIR$/utilites.h" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -43,6 +36,9 @@
     </option>
     <expand />
     <select />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="Compilation" />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -87,7 +83,8 @@
       <workItem from="1581544430973" duration="5936000" />
       <workItem from="1581801239495" duration="4625000" />
       <workItem from="1582027274233" duration="1058000" />
-      <workItem from="1582059506217" duration="7505000" />
+      <workItem from="1582059506217" duration="8154000" />
+      <workItem from="1582070772504" duration="2465000" />
     </task>
     <task id="LOCAL-00001" summary="start">
       <created>1580251354650</created>
@@ -180,7 +177,14 @@
       <option name="project" value="LOCAL" />
       <updated>1581804441754</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="syntax+some debug">
+      <created>1582067033376</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1582067033376</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -206,7 +210,8 @@
     <MESSAGE value="pile interpreter" />
     <MESSAGE value="make file and other stuffs" />
     <MESSAGE value="debug&#10;reste syntaxic" />
-    <option name="LAST_COMMIT_MESSAGE" value="debug&#10;reste syntaxic" />
+    <MESSAGE value="syntax+some debug" />
+    <option name="LAST_COMMIT_MESSAGE" value="syntax+some debug" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

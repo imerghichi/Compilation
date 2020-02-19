@@ -308,7 +308,7 @@ static booleen CONDITION(){
             return false;
     }
 }
-static booleen ELSEIF(){
+static booleen ELSEF(){
     switch (symbole_courrant.code) {
         case BO_TOKEN:
             sym_Suivant();
